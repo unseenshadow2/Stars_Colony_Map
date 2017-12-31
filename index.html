@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Town Map</title>
+
+        <link rel="stylesheet" href="css/styles.css?v=1.0">
+        <script src="processing.js"></script>
+    </head>
+    <body style="width: 100%; text-align: center;">
+        <button onclick="Processing.getInstanceById('mapCanvas').save('map.png');">Save</button><br/>
+        <canvas id="mapCanvas" data-processing-sources="town.pde"></canvas>
+    </body>
+</html>
