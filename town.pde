@@ -45,7 +45,7 @@ int fuelTotalW = houseW + adminTotal + roadWidth;
 int factoryTotalH = (2 * houseH) + roadWidth;
 int factoryTotalW = labTotalW + fuelTotalW;
 int landingTotalH = housingH + labTotalH + factoryTotalH;
-int landingTotalW = roadWidth + houseW;
+int landingTotalW = (3 * roadWidth) + houseW;
 
 // Prepare the canvas...
 void setup()
@@ -81,13 +81,18 @@ void draw()
 }
 
 // ----- Drawing Functions -----
-// Draws in the title
-void drawTitle()
+void prepTitle()
 {
 	textAlign(CENTER, TOP);
 	fill(titleColor);
 	// Load our font in
 	textFont(fontA, titleSize);
+}
+
+// Draws in the title
+void drawTitle()
+{
+	prepTitle();
 	text(title, canvasX / 2, titleY);
 }
 
@@ -187,9 +192,10 @@ void drawFactory(int x, int y)
 void drawLanding(int x, int y)
 {
 	int tempY = y;
+	int tempX = x;
 
 	// Roads
-	drawRoad(x, y, roadWidth, landingTotalH);
+	drawRoad(x, y, roadWidth * 3, landingTotalH);
 	y += houseH;
 	drawRoad(x, y, landingTotalW, roadWidth);
 	y += roadWidth + houseH;
@@ -204,7 +210,7 @@ void drawLanding(int x, int y)
 	y = tempY;
 
 	// "Buildings"
-	x += roadWidth;
+	x += roadWidth * 3;
 	drawBuilding(x, y, houseW, houseH, "Landing Pad 1");
 	y +=  + roadWidth + houseH;
 	drawBuilding(x, y, houseW, houseH, "Landing Pad 2");
@@ -216,6 +222,19 @@ void drawLanding(int x, int y)
 	drawBuilding(x, y, houseW, houseH, "Maintenance Bay");
 	y +=  + roadWidth + houseH;
 	drawBuilding(x, y, houseW, adminTotal, "Helicopter Maintenance\nand Helipads 1 thru 6");
+
+	y = tempY;
+	x = tempX;
+
+	prepTitle();
+	textAlign(CENTER, CENTER);
+	pushMatrix(); 
+
+	translate(x + (roadWidth * 1.5), y + (landingTotalH / 2));
+	rotate(PI/2);
+	text("Runway", 0, 0);
+
+	popMatrix();
 }
 
 // Prepare to draw a road
