@@ -3,6 +3,7 @@ color black = #000000;
 color white = #FFFFFF;
 color backColor = #028909;
 color road = #787878;
+color oceanColor = #0077BE;
 color building = #B4B4B4;
 color titleColor = black;
 color textColor = black;
@@ -33,6 +34,8 @@ int farmH = 150;
 int roadWidth = 25;
 int adminOffset = roadWidth;
 int adminWidth = houseW - (2 * adminOffset) - (2 * roadWidth);
+int runwayWidth = roadWidth * 3;
+int dockRoadHeight = runwayWidth;
 
 // ----- Section size information
 int housingH = (2 * houseH) + (2 * roadWidth);
@@ -45,7 +48,11 @@ int fuelTotalW = houseW + adminTotal + roadWidth;
 int factoryTotalH = (2 * houseH) + roadWidth;
 int factoryTotalW = labTotalW + fuelTotalW;
 int landingTotalH = housingH + labTotalH + factoryTotalH;
-int landingTotalW = (3 * roadWidth) + houseW;
+int landingTotalW = runwayWidth + houseW;
+int dockTotalH = (2 * houseH) + dockRoadHeight;
+int dockTotalW = housingW + landingTotalW;
+int oceanH = canvasY - landingTotalH - dockRoadHeight - drawYMin;
+int oceanW = canvasX;
 
 // Prepare the canvas...
 void setup()
@@ -63,6 +70,8 @@ void draw()
 {  
 	int cursorX = margin;
 	int cursorY = drawYMin;
+	
+	drawOcean();
 
 	drawTitle();
 	drawLanding(cursorX + housingW, cursorY);
@@ -78,6 +87,10 @@ void draw()
 
 	cursorY += labTotalH;
 	drawFactory(cursorX, cursorY);
+	
+	cursorX = margin;
+	cursorY += factoryTotalH;
+	drawDock(cursorX, cursorY);
 }
 
 // ----- Drawing Functions -----
@@ -195,7 +208,7 @@ void drawLanding(int x, int y)
 	int tempX = x;
 
 	// Roads
-	drawRoad(x, y, roadWidth * 3, landingTotalH);
+	drawRoad(x, y, runwayWidth, landingTotalH);
 	y += houseH;
 	drawRoad(x, y, landingTotalW, roadWidth);
 	y += roadWidth + houseH;
@@ -228,13 +241,27 @@ void drawLanding(int x, int y)
 
 	prepTitle();
 	textAlign(CENTER, CENTER);
+	
 	pushMatrix(); 
-
 	translate(x + (roadWidth * 1.5), y + (landingTotalH / 2));
 	rotate(PI/2);
 	text("Runway", 0, 0);
-
 	popMatrix();
+}
+
+// Draws the dock
+void drawDock(int x, int y)
+{
+	drawRoad(x, y, dockTotalW, roadWidth * 3);
+	drawBuilding(x, y + (roadWidth * 3), dockTotalW, dockTotalH - (roadWidth * 3), "Docks 1 through 8");
+}
+
+// Draws the oceanH
+void drawOcean()
+{
+	fill(oceanColor);
+	stroke(black);
+	rect(0, canvasY - oceanH, canvasX, oceanH);
 }
 
 // Prepare to draw a road
